@@ -132,7 +132,7 @@ kpi:
   #   - 'kc-local.kobotoolbox.org:172.17.0.1'
 
 nginx:
-  image: kobotoolbox/nginx:latest
+  image: ripcordengineering/nginx:version1
   # Dev: Build the image locally.
   # build: ./base_images/nginx
   hostname: nginx
@@ -144,13 +144,15 @@ nginx:
   environment:
     - NGINX_CONFIG_FILE_NAME=nginx_site_https.conf
     - TEMPLATED_VAR_REFS=$${PUBLIC_DOMAIN_NAME} $${KOBOFORM_PUBLIC_SUBDOMAIN} $${KOBOCAT_PUBLIC_SUBDOMAIN} $${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN}
-     - VIRTUAL_HOST=${KOBOFORM_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${KOBOCAT_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME}
+    - VIRTUAL_HOST=${KOBOFORM_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${KOBOCAT_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME}
 # Disable the two lines below for an http kobotoolbox deployment.
     - LETSENCRYPT_HOST=${KOBOFORM_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${KOBOCAT_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME},${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME}
     - LETSENCRYPT_EMAIL=${KOBO_SUPPORT_EMAIL}
-  ports:
-    - 80:80
-    - 443:443
+# Enable the line below for an http kobotoolbox deployment.
+#    - HTTPS_METHOD=noredirect
+#  ports:
+#    - 80:80
+#    - 443:443
   volumes:
       - ./.vols/static:/srv/www:ro
       # get the logs out of glusterfs!
